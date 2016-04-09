@@ -103,3 +103,11 @@ print '*'
 print other_matrix.to_string()
 print '='
 print (matrix * other_matrix).to_string()
+
+square_matrix = Matrix([[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]])
+identity_matrix = Matrix([[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]])
+print square_matrix.to_string()
+print '*'
+print identity_matrix.to_string()
+print '='
+print (square_matrix * identity_matrix).to_string()
