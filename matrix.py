@@ -47,14 +47,15 @@ class Matrix:
 
   def to_string(self):
     string = ''
-    for row in self.values:
+    for row_index, row in enumerate(self.values):
       string += '['
       for column_index, value in enumerate(row):
         string += str(value)
         if column_index != self.n_columns - 1:
           string += ' '
-      string += "]\n"
-
+      string += ']'
+      if row_index != self.n_rows - 1:
+        string += "\n"
     return string
 
   def __plus_scalar(self, scalar):
@@ -95,5 +96,10 @@ class Matrix:
 
     return self
 
-matrix = (Matrix(2, 3) + 2 * 3 + (Matrix(2, 3) + 10) + 100) * [[1,2], [2,3], [3,4]]
+matrix = Matrix([[1,2], [2,3], [3,4]])
 print matrix.to_string()
+other_matrix = Matrix([[1,2,3], [2,3,4]])
+print '*'
+print other_matrix.to_string()
+print '='
+print (matrix * other_matrix).to_string()
