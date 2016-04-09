@@ -58,6 +58,14 @@ class Matrix:
         string += "\n"
     return string
 
+  def transpose(self):
+    transposed_matrix = Matrix(self.n_columns, self.n_rows)
+    for row_index, row_value in enumerate(self.values):
+      for column_index, value in enumerate(row_value):
+        transposed_matrix.values[column_index][row_index] = value
+
+    return transposed_matrix
+
   def __plus_scalar(self, scalar):
     for row in self.values:
       for index, value in enumerate(row):
@@ -98,6 +106,8 @@ class Matrix:
 
 matrix = Matrix([[1,2], [2,3], [3,4]])
 print matrix
+print 'transposed'
+print matrix.transpose()
 other_matrix = Matrix([[1,2,3], [2,3,4]])
 print '*'
 print other_matrix
