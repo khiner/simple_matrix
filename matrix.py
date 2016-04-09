@@ -45,7 +45,7 @@ class Matrix:
       print 'Do not know how to add a ' + type(other) + ' to a matrix.'
       return self
 
-  def to_string(self):
+  def __str__(self):
     string = ''
     for row_index, row in enumerate(self.values):
       string += '['
@@ -97,17 +97,17 @@ class Matrix:
     return self
 
 matrix = Matrix([[1,2], [2,3], [3,4]])
-print matrix.to_string()
+print matrix
 other_matrix = Matrix([[1,2,3], [2,3,4]])
 print '*'
-print other_matrix.to_string()
+print other_matrix
 print '='
-print (matrix * other_matrix).to_string()
+print matrix * other_matrix
 
 square_matrix = Matrix([[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]])
 identity_matrix = Matrix([[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]])
-print square_matrix.to_string()
+print square_matrix
 print '*'
-print identity_matrix.to_string()
+print identity_matrix
 print '='
-print (square_matrix * identity_matrix).to_string()
+print square_matrix * identity_matrix
