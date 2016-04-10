@@ -1,20 +1,18 @@
-#!/usr/bin/env python
-
 class Matrix:
-  def __init__(self, n_rows_or_list = 1, n_columns = 1):
+  def __init__(self, n_rows_or_list = 0, n_columns = 0):
     if isinstance(n_rows_or_list, list):
       self.n_rows = len(n_rows_or_list)
       if len(n_rows_or_list) > 0 and isinstance(n_rows_or_list[0], list):
         self.n_columns = len(n_rows_or_list[0])
       else:
-        self.n_columns = 1
+        self.n_columns = 0
     else:
       if isinstance(n_rows_or_list, (int, long)):
         self.n_rows = n_rows_or_list
         self.n_columns = n_columns
       else:
-        print 'Don\'t know what to do with a ' + type(n_rows_or_list) + ' constructor. Defaulting to an empty 1-d matrix'
-        self.n_rows = self.n_columns = 1
+        print 'Don\'t know what to do with a ' + type(n_rows_or_list) + ' constructor. Defaulting to an empty 0-d matrix'
+        self.n_rows = self.n_columns = 0
 
     self.values = [[0 for i in range(self.n_columns)] for j in range(self.n_rows)]
     if isinstance(n_rows_or_list, list):
@@ -151,29 +149,3 @@ class Matrix:
       print 'Can only multiply a matrix with shape NXM by another with shape MXO'
 
     return self
-
-
-
-matrix = Matrix([[1,2], [2,3], [3,4]])
-print matrix
-print 'transposed'
-print matrix.transpose()
-other_matrix = Matrix([[1,2,3], [2,3,4]])
-print '*'
-print other_matrix
-print '='
-print matrix * other_matrix
-
-square_matrix = Matrix([[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]])
-identity_matrix = Matrix([[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]])
-print square_matrix
-print '*'
-print identity_matrix
-print '='
-print square_matrix * identity_matrix
-square_matrix.append_row([1,2,3,4,5,6])
-print 'not square anymore'
-print square_matrix
-square_matrix.append_column([1,2,3,4,5,6])
-print 'square again!'
-print square_matrix
