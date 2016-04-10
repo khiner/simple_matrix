@@ -13,6 +13,6 @@ class CsvMatrixReader:
     with open(file_path, 'rb') as csvfile:
       spamreader = csv.reader(csvfile, delimiter = delimiter, quotechar='|')
       for row in spamreader:
-        matrix.append_row(row)
+        matrix.append_row(map(float, row))
 
     return matrix

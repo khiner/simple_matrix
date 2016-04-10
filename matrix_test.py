@@ -27,7 +27,12 @@ square_matrix.append_column([1,2,3,4,5,6])
 print 'square again!'
 print square_matrix
 
-
 matrix = CsvMatrixReader.read_matrix('test.csv')
 print 'imported matrix'
+print matrix
+matrix.normalize_min_max()
+print 'normalized'
+print matrix
+matrix.standardize()
+print 'standardized'
 print matrix

@@ -56,6 +56,13 @@ class Matrix:
         string += "\n"
     return string
 
+  def rows(self):
+    return values
+
+  def columns(self):
+    # alternatively, return self.transpose.rows - might even be faster?
+    return [[row[column_index] for row in self.values] for column_index in range(self.n_columns)]
+
   def append_row(self, new_row):
     if isinstance(new_row, (int, long, float, complex)):
       new_row = [new_row] # create a single-element list if input is number
@@ -111,6 +118,35 @@ class Matrix:
         transposed_matrix.values[column_index][row_index] = value
 
     return transposed_matrix
+
+  # !In-Place!
+  # normalization technique, rescale reatures so they'll have mean=0 and standard_dev=1
+  def standardize(self):
+    if self.n_rows <= 1:
+      return self # nothing to do - only one row
+    for column_index, column in enumerate(self.columns()):
+      mean = sum(column) / self.n_rows
+      std_dev = (sum([ (value - mean) ** 2 for value in column]) / float(self.n_rows)) ** 0.5
+      for row_index, value in enumerate(column):
+        if std_dev != 0:
+          self.values[row_index][column_index] = (value - mean) / std_dev
+        else:
+          self.values[row_index][column_index] = 0
+
+    return self
+
+  def normalize_min_max(self):
+    for column_index, column in enumerate(self.columns()):
+      min_value = min(column)
+      max_value = max(column)
+      value_range = max_value - min_value
+      for row_index, value in enumerate(column):
+        if value_range != 0:
+          self.values[row_index][column_index] = (value - min_value) / value_range
+        else:
+          self.values[row_index][column_index] = 0
+
+    return self
 
   def __plus_scalar(self, scalar):
     for row in self.values:
