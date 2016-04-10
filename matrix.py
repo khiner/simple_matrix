@@ -120,7 +120,7 @@ class Matrix:
     return transposed_matrix
 
   # !In-Place!
-  # normalization technique, rescale reatures so they'll have mean=0 and standard_dev=1
+  # normalization technique, rescale features so each feature will have mean=0 and standard_dev=1
   def standardize(self):
     if self.n_rows <= 1:
       return self # nothing to do - only one row
@@ -132,6 +132,15 @@ class Matrix:
           self.rows[row_index][column_index] = (value - mean) / std_dev
         else:
           self.rows[row_index][column_index] = 0
+
+    return self
+
+  # subtract the mean from each feature value, so each feature will have mean=0
+  def normalize_mean(self):
+    for column_index, column in enumerate(self.columns()):
+      mean = sum(column) / self.n_rows
+      for row_index, value in enumerate(column):
+        self.rows[row_index][column_index] = value - mean
 
     return self
 

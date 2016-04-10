@@ -31,8 +31,8 @@ matrix = CsvMatrixReader.read_matrix('test.csv')
 print 'imported matrix'
 print matrix
 matrix.normalize_min_max()
-print 'normalized'
+print 'min-max normalized'
 print matrix
-matrix.standardize()
-print 'standardized'
+matrix.normalize_mean()
+print 'mean-normalized'
 print matrix
