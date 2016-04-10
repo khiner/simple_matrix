@@ -14,14 +14,14 @@ class Matrix:
         print 'Don\'t know what to do with a ' + type(n_rows_or_list) + ' constructor. Defaulting to an empty 0-d matrix'
         self.n_rows = self.n_columns = 0
 
-    self.values = [[0 for i in range(self.n_columns)] for j in range(self.n_rows)]
+    self.rows = [[0 for i in range(self.n_columns)] for j in range(self.n_rows)]
     if isinstance(n_rows_or_list, list):
       for row_index, row_value in enumerate(n_rows_or_list):
         if isinstance(row_value, list):
           for column_index, column_value in enumerate(row_value):
-            self.values[row_index][column_index] = column_value
+            self.rows[row_index][column_index] = column_value
         else:
-          self.values[row_index][0] = row_value
+          self.rows[row_index][0] = row_value
 
   def __add__(self, other):
     if isinstance(other, Matrix):
@@ -45,7 +45,7 @@ class Matrix:
 
   def __str__(self):
     string = ''
-    for row_index, row in enumerate(self.values):
+    for row_index, row in enumerate(self.rows):
       string += '['
       for column_index, value in enumerate(row):
         string += str(value)
@@ -57,11 +57,11 @@ class Matrix:
     return string
 
   def rows(self):
-    return values
+    return rows
 
   def columns(self):
     # alternatively, return self.transpose.rows - might even be faster?
-    return [[row[column_index] for row in self.values] for column_index in range(self.n_columns)]
+    return [[row[column_index] for row in self.rows] for column_index in range(self.n_columns)]
 
   def append_row(self, new_row):
     if isinstance(new_row, (int, long, float, complex)):
@@ -73,7 +73,7 @@ class Matrix:
     columns_to_pad = len(new_row) - self.n_columns
     if columns_to_pad > 0:
       # pad existing rows with zeros to match new dimensionality
-      for row in self.values:
+      for row in self.rows:
         for i in range(columns_to_pad):
           row.append(0)
     elif columns_to_pad < 0:
@@ -81,7 +81,7 @@ class Matrix:
       for i in range(-columns_to_pad):
         new_row.append(0)
 
-    self.values.append(new_row)
+    self.rows.append(new_row)
     self.n_rows += 1
     self.n_columns = len(new_row)
 
@@ -97,25 +97,25 @@ class Matrix:
     rows_to_pad = len(new_column) - self.n_rows
     if rows_to_pad > 0:
       # pad with new 0-filled rows to match new dimensionality
-      self.values.append([0] * self.n_columns)
+      self.rows.append([0] * self.n_columns)
     elif rows_to_pad < 0:
       # pad new row with zeros to match existing dimensionality
       for i in range(-rows_to_pad):
         new_column.append(0)
 
-    for row_index, row in enumerate(self.values):
+    for row_index, row in enumerate(self.rows):
       row.append(new_column[row_index])
 
     self.n_columns += 1
-    self.n_rows = len(self.values)
+    self.n_rows = len(self.rows)
 
     return self
 
   def transpose(self):
     transposed_matrix = Matrix(self.n_columns, self.n_rows)
-    for row_index, row_value in enumerate(self.values):
+    for row_index, row_value in enumerate(self.rows):
       for column_index, value in enumerate(row_value):
-        transposed_matrix.values[column_index][row_index] = value
+        transposed_matrix.rows[column_index][row_index] = value
 
     return transposed_matrix
 
@@ -129,9 +129,9 @@ class Matrix:
       std_dev = (sum([ (value - mean) ** 2 for value in column]) / float(self.n_rows)) ** 0.5
       for row_index, value in enumerate(column):
         if std_dev != 0:
-          self.values[row_index][column_index] = (value - mean) / std_dev
+          self.rows[row_index][column_index] = (value - mean) / std_dev
         else:
-          self.values[row_index][column_index] = 0
+          self.rows[row_index][column_index] = 0
 
     return self
 
@@ -142,14 +142,14 @@ class Matrix:
       value_range = max_value - min_value
       for row_index, value in enumerate(column):
         if value_range != 0:
-          self.values[row_index][column_index] = (value - min_value) / value_range
+          self.rows[row_index][column_index] = (value - min_value) / value_range
         else:
-          self.values[row_index][column_index] = 0
+          self.rows[row_index][column_index] = 0
 
     return self
 
   def __plus_scalar(self, scalar):
-    for row in self.values:
+    for row in self.rows:
       for index, value in enumerate(row):
         row[index] += scalar
 
@@ -157,16 +157,16 @@ class Matrix:
 
   def __plus_matrix(self, other):
     if other.n_rows == self.n_rows and other.n_columns == self.n_columns:
-      for row_index, row in enumerate(self.values):
+      for row_index, row in enumerate(self.rows):
         for column_index, value in enumerate(row):
-          self.values[row_index][column_index] += other.values[row_index][column_index]
+          self.rows[row_index][column_index] += other.rows[row_index][column_index]
     else:
       print 'Cannot add a matrix by another with different dimensionality.'
 
     return self
 
   def __times_scalar(self, scalar):
-    for row in self.values:
+    for row in self.rows:
       for index, value in enumerate(row):
         row[index] *= scalar
 
@@ -175,11 +175,11 @@ class Matrix:
   def __times_matrix(self, other):
     if other.n_rows == self.n_columns:
       result_matrix = Matrix(self.n_rows, other.n_columns)
-      for row_index, row in enumerate(self.values):
+      for row_index, row in enumerate(self.rows):
         for other_column_index in range(other.n_columns):
-          result_matrix.values[row_index][other_column_index] = 0
+          result_matrix.rows[row_index][other_column_index] = 0
           for column_index, value in enumerate(row):
-            result_matrix.values[row_index][other_column_index] += value * other.values[column_index][other_column_index]
+            result_matrix.rows[row_index][other_column_index] += value * other.rows[column_index][other_column_index]
       return result_matrix
     else:
       print 'Can only multiply a matrix with shape NXM by another with shape MXO'
