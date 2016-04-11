@@ -43,6 +43,9 @@ class Matrix:
       print 'Do not know how to add a ' + type(other) + ' to a matrix.'
       return self
 
+  def __neg__(self):
+    return self * -1
+
   def __getitem__(self, index):
     return self.rows.__getitem__(index)
 

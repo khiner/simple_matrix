@@ -42,3 +42,4 @@ print matrix.size()
 
 print 'identity'
 print Matrix.identity(5)
+print -Matrix.identity(5)
