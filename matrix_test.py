@@ -37,6 +37,11 @@ matrix.normalize_mean()
 print 'mean-normalized'
 print matrix
 
+print 'max'
+print matrix.max()
+print 'min'
+print matrix.min()
+
 print 'size'
 print matrix.size()
 

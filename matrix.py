@@ -116,6 +116,12 @@ class Matrix:
   def size(self):
     return Matrix([self.n_rows, self.n_columns])
 
+  def max(self):
+    return max([max(row) for row in self])
+
+  def min(self):
+    return min([min(row) for row in self])
+
   def is_vector(self):
     return self.n_columns == 1
 
