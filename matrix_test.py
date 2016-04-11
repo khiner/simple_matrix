@@ -53,3 +53,11 @@ print 'zeros'
 print Matrix.zeros(2,3)
 print 'ones'
 print Matrix.ones(3,2)
+
+print 'equal?'
+print Matrix.ones(3,3) == Matrix.zeros(3,3)
+print Matrix.ones(3,3) == Matrix.ones(3,3)
+
+print 'not equal?'
+print Matrix.ones(3,3) != Matrix.ones(3,3)
+

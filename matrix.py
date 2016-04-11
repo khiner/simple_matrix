@@ -66,6 +66,19 @@ class Matrix:
   def __neg__(self):
     return self * -1
 
+  def __eq__(self, other):
+    if self.n_rows != other.n_rows or self.n_columns != other.n_columns:
+      return False
+    else:
+      for row_index, row in enumerate(self):
+        if other[row_index] != row:
+          return False
+
+    return True
+
+  def __ne__(self, other):
+    return not self.__eq__(other)
+
   def __getitem__(self, index):
     return self.rows.__getitem__(index)
 
