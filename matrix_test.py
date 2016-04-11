@@ -39,3 +39,6 @@ print matrix
 
 print 'size'
 print matrix.size()
+
+print 'identity'
+print Matrix.identity(5)
