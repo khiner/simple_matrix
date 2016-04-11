@@ -32,6 +32,15 @@ class Matrix:
       print 'Do not know how to add a ' + type(other) + ' to a matrix.'
       return self
 
+  def __sub__(self, other):
+    if isinstance(other, Matrix):
+      return self.__minus_matrix(other)
+    elif isinstance(other, (int, long, float, complex)):
+      return self.__plus_scalar(-other)
+    else:
+      print 'Do not know how to subtract a ' + type(other) + ' from a matrix.'
+      return self
+
   def __mul__(self, other):
     if isinstance(other, Matrix):
       return self.__times_matrix(other)
@@ -40,7 +49,18 @@ class Matrix:
     elif isinstance(other, (int, long, float, complex)):
       return self.__times_scalar(other)
     else:
-      print 'Do not know how to add a ' + type(other) + ' to a matrix.'
+      print 'Do not know how to multiply a ' + type(other) + ' to a matrix.'
+      return self
+
+  def __div__(self, other):
+    if isinstance(other, Matrix):
+      return self.__divided_by_matrix(other)
+    elif isinstance(other, list):
+      return self.__divided_by_matrix(Matrix(other))
+    elif isinstance(other, (int, long, float, complex)):
+      return self.__times_scalar(1.0 / other)
+    else:
+      print 'Do not know how to divide a ' + type(other) + ' to a matrix.'
       return self
 
   def __neg__(self):
@@ -70,6 +90,20 @@ class Matrix:
       if row_index != self.n_rows - 1:
         string += "\n"
     return string
+
+  def dot(self, other):
+    if other.n_rows == self.n_columns:
+      result_matrix = Matrix(self.n_rows, other.n_columns)
+      for row_index, row in enumerate(self):
+        for other_column_index in range(other.n_columns):
+          result_matrix[row_index][other_column_index] = 0
+          for column_index, value in enumerate(row):
+            result_matrix[row_index][other_column_index] += value * other[column_index][other_column_index]
+      return result_matrix
+    else:
+      print 'Can only take the dot product of a matrix with shape NXM and another with shape MXO'
+
+    return self
 
   def rows(self):
     return rows
@@ -140,7 +174,7 @@ class Matrix:
     transposed_matrix = Matrix(self.n_columns, self.n_rows)
     for row_index, row_value in enumerate(self):
       for column_index, value in enumerate(row_value):
-        transposed_matrix.rows[column_index][row_index] = value
+        transposed_matrix[column_index][row_index] = value
 
     return transposed_matrix
 
@@ -186,7 +220,7 @@ class Matrix:
   def identity(size):
     identity_matrix = Matrix(size, size)
     for i in range(size):
-      identity_matrix.rows[i][i] = 1
+      identity_matrix[i][i] = 1
 
     return identity_matrix
 
@@ -197,16 +231,6 @@ class Matrix:
 
     return self
 
-  def __plus_matrix(self, other):
-    if other.n_rows == self.n_rows and other.n_columns == self.n_columns:
-      for row_index, row in enumerate(self):
-        for column_index, value in enumerate(row):
-          self[row_index][column_index] += other.rows[row_index][column_index]
-    else:
-      print 'Cannot add a matrix by another with different dimensionality.'
-
-    return self
-
   def __times_scalar(self, scalar):
     for row in self:
       for index, value in enumerate(row):
@@ -214,16 +238,42 @@ class Matrix:
 
     return self
 
-  def __times_matrix(self, other):
-    if other.n_rows == self.n_columns:
-      result_matrix = Matrix(self.n_rows, other.n_columns)
+  def __plus_matrix(self, other):
+    if other.n_rows == self.n_rows and other.n_columns == self.n_columns:
       for row_index, row in enumerate(self):
-        for other_column_index in range(other.n_columns):
-          result_matrix.rows[row_index][other_column_index] = 0
-          for column_index, value in enumerate(row):
-            result_matrix.rows[row_index][other_column_index] += value * other.rows[column_index][other_column_index]
-      return result_matrix
+        for column_index, value in enumerate(row):
+          self[row_index][column_index] += other[row_index][column_index]
     else:
-      print 'Can only multiply a matrix with shape NXM by another with shape MXO'
+      print 'Cannot add a matrix by another with different dimensionality.'
+
+    return self
+
+  def __minus_matrix(self, other):
+    if other.n_rows == self.n_rows and other.n_columns == self.n_columns:
+      for row_index, row in enumerate(self):
+        for column_index, value in enumerate(row):
+          self[row_index][column_index] -= other[row_index][column_index]
+    else:
+      print 'Cannot subtract a matrix by another with different dimensionality.'
+
+    return self
+
+  def __times_matrix(self, other):
+    if other.n_rows == self.n_rows and other.n_columns == self.n_columns:
+      for row_index, row in enumerate(self):
+        for column_index, value in enumerate(row):
+          self[row_index][column_index] *= other[row_index][column_index]
+    else:
+      print 'Cannot multiply a matrix by another with different dimensionality.'
+
+    return self
+
+  def __divided_by_matrix(self, other):
+    if other.n_rows == self.n_rows and other.n_columns == self.n_columns:
+      for row_index, row in enumerate(self):
+        for column_index, value in enumerate(row):
+          self[row_index][column_index] /= other[row_index][column_index]
+    else:
+      print 'Cannot divide a matrix by another with different dimensionality.'
 
     return self
