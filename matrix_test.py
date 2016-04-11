@@ -43,3 +43,8 @@ print matrix.size()
 print 'identity'
 print Matrix.identity(5)
 print -Matrix.identity(5)
+
+print 'zeros'
+print Matrix.zeros(2,3)
+print 'ones'
+print Matrix.ones(3,2)

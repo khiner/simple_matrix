@@ -224,6 +224,19 @@ class Matrix:
 
     return identity_matrix
 
+  @staticmethod
+  def zeros(n_rows, n_columns):
+    return Matrix(n_rows, n_columns)
+
+  @staticmethod
+  def ones(n_rows, n_columns):
+    matrix = Matrix(n_rows, n_columns)
+    for row_index in range(n_rows):
+      for column_index in range(n_columns):
+        matrix[row_index][column_index] = 1
+
+    return matrix
+
   def __plus_scalar(self, scalar):
     for row in self:
       for index, value in enumerate(row):
