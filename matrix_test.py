@@ -36,3 +36,6 @@ print matrix
 matrix.normalize_mean()
 print 'mean-normalized'
 print matrix
+
+print 'size'
+print matrix.size()

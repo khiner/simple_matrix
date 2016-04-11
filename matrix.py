@@ -2,10 +2,10 @@ class Matrix:
   def __init__(self, n_rows_or_list = 0, n_columns = 0):
     if isinstance(n_rows_or_list, list):
       self.n_rows = len(n_rows_or_list)
-      if len(n_rows_or_list) > 0 and isinstance(n_rows_or_list[0], list):
+      if self.n_rows > 0 and isinstance(n_rows_or_list[0], list):
         self.n_columns = len(n_rows_or_list[0])
       else:
-        self.n_columns = 0
+        self.n_columns = 1
     else:
       if isinstance(n_rows_or_list, (int, long)):
         self.n_rows = n_rows_or_list
@@ -62,6 +62,13 @@ class Matrix:
   def columns(self):
     # alternatively, return self.transpose.rows - might even be faster?
     return [[row[column_index] for row in self.rows] for column_index in range(self.n_columns)]
+
+  # returns a 2X1 matrix (vector of length 2) populated with the row & column size of this matrix
+  def size(self):
+    return Matrix([self.n_rows, self.n_columns])
+
+  def is_vector(self):
+    return self.n_columns == 1
 
   def append_row(self, new_row):
     if isinstance(new_row, (int, long, float, complex)):
